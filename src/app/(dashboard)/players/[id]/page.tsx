@@ -1,4 +1,13 @@
-'use client';
+"use client";
 
+import React from "react";
 
-<h1>COMING SOON!</h1>
+const PlayerDashboard = () => {
+  return (
+    <div>
+      <h1>COMING SOON!</h1>
+    </div>
+  );
+};
+
+export default PlayerDashboard;
