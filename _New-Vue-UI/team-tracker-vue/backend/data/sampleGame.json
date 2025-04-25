@@ -1,0 +1,14 @@
+[
+    {
+      "date": "2025-04-10",
+      "opponent": "Red Dragons",
+      "result": "win",
+      "score": { "us": 3, "them": 1 }
+    },
+    {
+      "date": "2025-04-17",
+      "opponent": "Blue Sharks",
+      "result": "loss",
+      "score": { "us": 2, "them": 4 }
+    }
+  ]

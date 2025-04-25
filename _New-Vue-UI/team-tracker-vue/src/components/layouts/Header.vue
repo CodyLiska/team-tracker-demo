@@ -31,16 +31,23 @@ function toggleTheme() {
   isDark.value = !isDark.value
   if (isDark.value) {
     document.body.classList.add('dark-theme')
+    document.documentElement.classList.add('dark-theme')
   } else {
     document.body.classList.remove('dark-theme')
+    document.documentElement.classList.remove('dark-theme')
   }
 }
 
 // Optional: Persist theme across reloads
 onMounted(() => {
-  if (localStorage.getItem('theme') === 'dark') {
-    isDark.value = true
+  const dark = localStorage.getItem('theme') === 'dark'
+  isDark.value = dark
+  if (dark) {
     document.body.classList.add('dark-theme')
+    document.documentElement.classList.add('dark-theme')
+  } else {
+    document.body.classList.remove('dark-theme')
+    document.documentElement.classList.remove('dark-theme')
   }
 })
 
