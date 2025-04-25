@@ -7,8 +7,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
+  LabelList,
 } from "recharts";
 
 const sampleData = [
@@ -36,6 +36,12 @@ export default function PerformanceChart() {
           data={sampleData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
+          <defs>
+            <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={barColor} stopOpacity={0.8} />
+              <stop offset="100%" stopColor={barColor} stopOpacity={0.2} />
+            </linearGradient>
+          </defs>
           <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
           <XAxis
             dataKey="skill"
@@ -43,14 +49,9 @@ export default function PerformanceChart() {
             tick={{ fill: textColor }}
           />
           <YAxis stroke={textColor} tick={{ fill: textColor }} />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: useColorModeValue("white", "gray.800"),
-              border: "1px solid",
-              borderColor: gridColor,
-            }}
-          />
-          <Bar dataKey="average" fill={barColor} />
+          <Bar dataKey="average" fill="url(#barGradient)">
+            <LabelList dataKey="average" position="top" fill={textColor} />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </Box>

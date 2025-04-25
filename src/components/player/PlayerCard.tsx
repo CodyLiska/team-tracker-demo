@@ -64,10 +64,10 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }) => {
         <Text fontSize="xl" fontWeight="bold" color={textColor} mb={1}>
           {player.name}
         </Text>
-        <Text fontSize="md" color={textColor} mb={4}>
+        <Text fontSize="md" color={textColor} mb={1}>
           #{player.number}
         </Text>
-        <Text color={textColor} mb={2}>
+        <Text color={textColor} mb={3}>
           Position: {player.position}
         </Text>
         <Flex justifyContent="space-between" alignItems="center" mb={1}>

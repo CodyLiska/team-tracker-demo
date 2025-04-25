@@ -1,27 +1,28 @@
-"use client";
+<!-- src/views/coach/CoachDashboard.vue -->
+<template>
+  <el-container>
+    <el-main>
+      <!-- Player Table -->
+      <el-table :data="players" style="width: 100%; margin-bottom: 2rem;">
+        <el-table-column prop="name" label="Name" />
+        <el-table-column prop="number" label="Number" />
+        <el-table-column prop="position" label="Position" />
+      </el-table>
 
-import {
-  Box,
-  Container,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Card,
-  CardHeader,
-  CardBody,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import PerformanceChart from "../../../components/charts/TeamSkillsAverages";
-import PlayerStatsRadar from "../../../components/charts/PlayerStats";
+      <!-- Example Chart (replace with your actual chart) -->
+      <el-card>
+        <el-card-header>Team Skills Averages</el-card-header>
+        <el-card-body>
+          <BarChart :data="teamSkillsData" />
+        </el-card-body>
+      </el-card>
+    </el-main>
+  </el-container>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import BarChart from '../../components/charts/BarChart.vue'
 
 const players = [
   {
@@ -321,93 +322,66 @@ const players = [
   // Add more players as needed
 ];
 
+// Example: Prepare data for a team skills bar chart
+const teamSkillsData = ref({
+  labels: ['Agility', 'Balance', 'Coordination', 'Stamina', 'Strength', 'Speed'],
+  datasets: [
+    {
+      label: 'Average',
+      backgroundColor: '#409EFF',
+      data: [85, 80, 75, 90, 85, 88]
+    }
+  ]
+})
 
-export default function CoachDashboard() {
-  const bgColor = useColorModeValue("gray.50", "gray.900");
-  const cardBg = useColorModeValue("white", "gray.800");
+</script>
 
-  return (
-    <Box bg={bgColor} minH="100vh" py={8}>
-      <Container maxW="container.xl">
-        <Heading mb={8}>Coach Dashboard</Heading>
-
-        {/* Stats Overview */}
-        <SimpleGrid columns={{ base: 1, md: 4 }} spacing={6} mb={8}>
-          <Stat bg={cardBg} p={6} borderRadius="lg" boxShadow="sm">
-            <StatLabel>Total Players</StatLabel>
-            <StatNumber>24</StatNumber>
-            <StatHelpText>Active roster</StatHelpText>
-          </Stat>
-          <Stat bg={cardBg} p={6} borderRadius="lg" boxShadow="sm">
-            <StatLabel>Games Played</StatLabel>
-            <StatNumber>12</StatNumber>
-            <StatHelpText>This season</StatHelpText>
-          </Stat>
-          <Stat bg={cardBg} p={6} borderRadius="lg" boxShadow="sm">
-            <StatLabel>Win Rate</StatLabel>
-            <StatNumber>75%</StatNumber>
-            <StatHelpText>+5% from last month</StatHelpText>
-          </Stat>
-          <Stat bg={cardBg} p={6} borderRadius="lg" boxShadow="sm">
-            <StatLabel>Team Rating</StatLabel>
-            <StatNumber>8.5</StatNumber>
-            <StatHelpText>Average performance</StatHelpText>
-          </Stat>
-        </SimpleGrid>
-
-        {/* Performance Chart */}
-        <Card bg={cardBg} mb={8}>
-          <CardHeader>
-            <Heading size="md">Team Skills Average</Heading>
-          </CardHeader>
-          <CardBody>
-            <PerformanceChart />
-          </CardBody>
-        </Card>
-
-        {/* Player Stats Radar */}
-        <Card bg={cardBg} mb={8}>
-          <CardHeader>
-            <Heading size="md">Player Stats</Heading>
-          </CardHeader>
-          <CardBody>
-            <PlayerStatsRadar players={players} />
-          </CardBody>
-        </Card>
-
-        {/* Recent Activity */}
-        <Card bg={cardBg} mb={8}>
-          <CardHeader>
-            <Heading size="md">Recent Activity</Heading>
-          </CardHeader>
-          <CardBody>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Date</Th>
-                  <Th>Player</Th>
-                  <Th>Activity</Th>
-                  <Th>Details</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>Today</Td>
-                  <Td>John Doe</Td>
-                  <Td>Training Complete</Td>
-                  <Td>90 minutes</Td>
-                </Tr>
-                <Tr>
-                  <Td>Yesterday</Td>
-                  <Td>Team</Td>
-                  <Td>Match Won</Td>
-                  <Td>3-1 vs Eagles</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </CardBody>
-        </Card>
-      </Container>
-    </Box>
-  );
+<style scoped>
+.el-main {
+  background: var(--bg-main);
+  color: var(--text-main);
 }
+:deep(.el-table__header-wrapper),
+:deep(.el-table__header),
+:deep(.el-table),
+:deep(.el-table__inner-wrapper),
+:deep(.el-table__body),
+:deep(.el-table__cell),
+:deep(.el-table th),
+:deep(.el-table td),
+:deep(.el-table__body-wrapper),
+:deep(.el-table__row),
+:deep(.el-table__header tr),
+:deep(.el-table__header th),
+:deep(.el-table__row > td),
+:deep(.el-table__row > th) {
+  background: var(--card-bg) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border) !important;
+}
+
+/* Fix for striped rows */
+:deep(.el-table--striped .el-table__body tr.el-table__row--striped td) {
+  background: var(--bg-secondary) !important;
+}
+
+/* Fix for hover */
+:deep(.el-table__body tr:hover > td) {
+  background: var(--bg-secondary) !important;
+}
+
+.el-card {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+.el-card-header {
+  color: var(--text-main);
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
+}
+.el-card-body {
+  background: var(--card-bg);
+}
+
+</style>

@@ -1,0 +1,106 @@
+:root {
+  /* Typography and base */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Theme variables (light mode) */
+  --bg-main: #fff;
+  --bg-secondary: #f5f6fa;
+  --text-main: #23263a;
+  --text-secondary: #5c5c6e;
+  --card-bg: #fff;
+  --header-bg: #fff;
+  --footer-bg: #fff;
+  --border: #e4e7ed;
+  --primary: #3498fd;
+
+  color-scheme: light;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* DARK THEME OVERRIDES */
+body.dark-theme {
+  --bg-main: #131622;
+  --bg-secondary: #191c2b;
+  --text-main: #fff;
+  --text-secondary: #bfc9d7;
+  --card-bg: #191c2b;
+  --header-bg: #181a23;
+  --footer-bg: #181a23;
+  --border: #3a425a;
+  --primary: #3498fd;
+
+  color-scheme: dark;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: var(--text-main);
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, color 0.25s;
+}
+button:hover {
+  border-color: var(--primary);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.card {
+  padding: 2em;
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Remove the prefers-color-scheme media query block.
+   The theme is now controlled by the .dark-theme class on <body>. */
