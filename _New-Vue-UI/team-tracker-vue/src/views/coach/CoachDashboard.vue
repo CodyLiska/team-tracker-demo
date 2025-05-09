@@ -1,35 +1,34 @@
 <template>
-  <div class="main-container">
-    <div class="coach-dashboard">
-      <StatsRow :statsArray="statsArray" />
+  <PageWrapper>
+    <div class="main-container">
+      <div class="coach-dashboard">
+        <StatsRow :statsArray="statsArray" />
 
-      <TeamSkillsChart :data="teamSkillsData" :key="themeKey" />
+        <TeamSkillsChart :data="teamSkillsData" />
 
-      <PlayerCards
-        :players="players"
-        :getAverage="getAverage"
-        @show-details="showPlayerDetails"
-      />
+        <PlayerCards :players="players" :getAverage="getAverage" @show-details="showPlayerDetails" />
 
-      <!-- Player Details Modal -->
-      <el-dialog v-model="playerDialogVisible" :title="selectedPlayer ? selectedPlayer.name + ' - #' + selectedPlayer.number : ''" width="400px">
-        <div v-if="selectedPlayer">
-          <div style="margin-bottom: 10px;">Position: {{ selectedPlayer.position }}</div>
-          <div v-for="category in skillCategories" :key="category" style="margin-bottom: 8px;">
-            <strong>{{ categoryDisplay[category] }}:</strong>
-            <div v-for="(value, skill) in selectedPlayer[category]" :key="skill">
-              {{ skill }}: {{ value }}
+        <!-- Player Details Modal -->
+        <el-dialog v-model="playerDialogVisible"
+          :title="selectedPlayer ? selectedPlayer.name + ' - #' + selectedPlayer.number : ''" width="400px">
+          <div v-if="selectedPlayer">
+            <div style="margin-bottom: 10px;">Position: {{ selectedPlayer.position }}</div>
+            <div v-for="category in skillCategories" :key="category" style="margin-bottom: 8px;">
+              <strong>{{ categoryDisplay[category] }}:</strong>
+              <div v-for="(value, skill) in selectedPlayer[category]" :key="skill">
+                {{ skill }}: {{ value }}
+              </div>
             </div>
           </div>
-        </div>
-        <template #footer>
-          <el-button @click="playerDialogVisible = false">Close</el-button>
-        </template>
-      </el-dialog>
+          <template #footer>
+            <el-button @click="playerDialogVisible = false">Close</el-button>
+          </template>
+        </el-dialog>
 
-      <RecentActivity :recentActivity="recentActivity" />
+        <RecentActivity :recentActivity="recentActivity" />
+      </div>
     </div>
-  </div>
+  </PageWrapper>
 </template>
 
 <script setup>
@@ -49,14 +48,14 @@ const stats = ref({
   gamesPlayed: 0,
   winRate: '0%',
   teamRating: 0
-});
+})
 
 const statsArray = computed(() => [
-  { label: "Total Players", value: stats.value.totalPlayers, desc: "Players on roster" },
-  { label: "Games Played", value: stats.value.gamesPlayed, desc: "Total games played" },
-  { label: "Win Rate", value: stats.value.winRate, desc: "Win percentage" },
-  { label: "Team Rating", value: stats.value.teamRating, desc: "Avg. technical rating" }
-]);
+  { label: 'Total Players', value: stats.value.totalPlayers, desc: 'Players on roster' },
+  { label: 'Games Played', value: stats.value.gamesPlayed, desc: 'Total games played' },
+  { label: 'Win Rate', value: stats.value.winRate, desc: 'Win percentage' },
+  { label: 'Team Rating', value: stats.value.teamRating, desc: 'Avg. technical rating' }
+])
 
 const teamSkillsData = ref({
   labels: ['Psychological', 'Physical', 'Social/Emotional', 'Technical'],
@@ -80,27 +79,27 @@ const loadPlayers = async () => {
       physical: 0,
       socialEmotional: 0,
       technical: 0
-    };
+    }
     const categoryCounts = {
       psychological: 0,
       physical: 0,
       socialEmotional: 0,
       technical: 0
-    };
+    }
 
     players.value.forEach(player => {
       Object.keys(categoryAverages).forEach(category => {
-        const values = Object.values(player[category] || {});
-        categoryAverages[category] += values.reduce((a, b) => a + b, 0);
-        categoryCounts[category] += values.length;
-      });
-    });
+        const values = Object.values(player[category] || {})
+        categoryAverages[category] += values.reduce((a, b) => a + b, 0)
+        categoryCounts[category] += values.length
+      })
+    })
 
     Object.keys(categoryAverages).forEach(category => {
       categoryAverages[category] = categoryCounts[category]
         ? (categoryAverages[category] / categoryCounts[category]).toFixed(1)
-        : 0;
-    });
+        : 0
+    })
 
     teamSkillsData.value = {
       ...teamSkillsData.value,
@@ -123,25 +122,25 @@ const loadPlayers = async () => {
 
 const loadStats = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/stats');
-    stats.value = response.data;
+    const response = await axios.get('http://localhost:5000/api/stats')
+    stats.value = response.data
   } catch (error) {
-    console.error('Error loading stats:', error);
+    console.error('Error loading stats:', error)
   }
-};
+}
 
 const themeKey = ref('light')
 
 onMounted(() => {
   // Set initial value
   themeKey.value = document.body.classList.contains('dark-theme') ? 'dark' : 'light'
-  
+
   const observer = new MutationObserver(() => {
     themeKey.value = document.body.classList.contains('dark-theme') ? 'dark' : 'light'
   })
   observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-  loadPlayers();
-  loadStats();
+  loadPlayers()
+  loadStats()
 })
 
 const skillCategories = ['psychological', 'physical', 'socialEmotional', 'technical']
@@ -152,12 +151,12 @@ const categoryDisplay = {
   technical: 'Technical'
 }
 
-const getAverage = (skills) => {
+const getAverage = skills => {
   const values = Object.values(skills)
   return (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1)
 }
 
-const showPlayerDetails = (player) => {
+const showPlayerDetails = player => {
   selectedPlayer.value = player
   playerDialogVisible.value = true
 }
@@ -174,11 +173,13 @@ const recentActivity = ref([
   margin: 0 auto;
   padding: 0 16px;
   width: 100%;
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
 }
+
 .coach-dashboard {
   padding: 16px 0 32px 0;
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
 }
-/* If you have modal-specific styles, keep them here */
-:deep(.el-dialog) { background: #181a23 !important; }
-:deep(.el-overlay) { background: rgba(0,0,0,0.6) !important; }
 </style>

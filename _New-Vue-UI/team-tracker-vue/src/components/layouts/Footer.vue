@@ -21,10 +21,22 @@
 </script>
 
 <style scoped>
-.footer-links, .footer-social {
+.footer {
+  /* margin: 0; */
+  /* Remove unnecessary margins */
+  /* padding: 16px 0; */
+  /* Add padding for spacing */
+  text-align: center;
+  background: var(--footer-bg);
+  color: var(--text-main);
+}
+
+.footer-links,
+.footer-social {
   margin-bottom: 8px;
   gap: 16px;
 }
+
 .footer-social i {
   font-size: 1.5em;
 }

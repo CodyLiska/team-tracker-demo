@@ -341,6 +341,7 @@ const teamSkillsData = ref({
   background: var(--bg-main);
   color: var(--text-main);
 }
+
 :deep(.el-table__header-wrapper),
 :deep(.el-table__header),
 :deep(.el-table),
@@ -375,13 +376,14 @@ const teamSkillsData = ref({
   color: var(--text-main);
   border: 1px solid var(--border);
 }
+
 .el-card-header {
   color: var(--text-main);
   background: var(--header-bg);
   border-bottom: 1px solid var(--border);
 }
+
 .el-card-body {
   background: var(--card-bg);
 }
-
 </style>

@@ -6,10 +6,10 @@
         <router-link :to="item.path">{{ item.label }}</router-link>
       </el-menu-item>
     </el-menu>
-    <el-button class="theme-btn" @click="toggleTheme" circle>
+    <!-- <el-button class="theme-btn" @click="toggleTheme" circle>
   <i v-if="isDark" class="fas fa-moon"></i>
   <i v-else class="fas fa-sun"></i>
-</el-button>
+</el-button> -->
   </div>
 </template>
 
@@ -27,33 +27,33 @@ const activeMenu = ref(route.path)
 
 const isDark = ref(false)
 
-function toggleTheme() {
-  isDark.value = !isDark.value
-  if (isDark.value) {
-    document.body.classList.add('dark-theme')
-    document.documentElement.classList.add('dark-theme')
-  } else {
-    document.body.classList.remove('dark-theme')
-    document.documentElement.classList.remove('dark-theme')
-  }
-}
+// function toggleTheme() {
+//   isDark.value = !isDark.value
+//   if (isDark.value) {
+//     document.body.classList.add('dark-theme')
+//     document.documentElement.classList.add('dark-theme')
+//   } else {
+//     document.body.classList.remove('dark-theme')
+//     document.documentElement.classList.remove('dark-theme')
+//   }
+// }
 
 // Optional: Persist theme across reloads
-onMounted(() => {
-  const dark = localStorage.getItem('theme') === 'dark'
-  isDark.value = dark
-  if (dark) {
-    document.body.classList.add('dark-theme')
-    document.documentElement.classList.add('dark-theme')
-  } else {
-    document.body.classList.remove('dark-theme')
-    document.documentElement.classList.remove('dark-theme')
-  }
-})
+// onMounted(() => {
+//   const dark = localStorage.getItem('theme') === 'dark'
+//   isDark.value = dark
+//   if (dark) {
+//     document.body.classList.add('dark-theme')
+//     document.documentElement.classList.add('dark-theme')
+//   } else {
+//     document.body.classList.remove('dark-theme')
+//     document.documentElement.classList.remove('dark-theme')
+//   }
+// })
 
-watch(isDark, (val) => {
-  localStorage.setItem('theme', val ? 'dark' : 'light')
-})
+// watch(isDark, (val) => {
+//   localStorage.setItem('theme', val ? 'dark' : 'light')
+// })
 </script>
 
 <style scoped>
@@ -67,34 +67,40 @@ watch(isDark, (val) => {
   color: var(--text-main);
   border-bottom: 1px solid var(--border);
 }
+
 .logo {
   font-size: 1.2em;
   font-weight: bold;
   text-decoration: none;
   color: var(--text-main);
 }
+
 .nav-menu {
   flex: 1;
   margin: 0 24px;
   background: transparent;
   border-bottom: none;
 }
+
 .el-menu--horizontal {
   background: transparent !important;
   border-bottom: none !important;
 }
+
 .el-menu-item {
   color: var(--text-secondary) !important;
   background: transparent !important;
 }
+
 .el-menu-item.is-active {
   color: var(--primary) !important;
   background: var(--bg-secondary) !important;
 }
-.theme-btn {
+
+/* .theme-btn {
   margin-left: 16px;
   background: var(--bg-secondary);
   color: var(--text-main);
   border: none;
-}
+} */
 </style>

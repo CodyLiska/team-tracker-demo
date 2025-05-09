@@ -29,7 +29,7 @@ const loadPlayers = async () => {
   try {
     const data = await playerService.getAllPlayers()
     players.value = data
-    
+
     // Update stats
     stats.value = {
       totalPlayers: data.length,
@@ -37,7 +37,7 @@ const loadPlayers = async () => {
       winRate: '75%',  // This should come from your backend
       teamRating: 8.5  // This should come from your backend
     }
-    
+
     // Calculate team averages
     const averages = {
       psychological: 0,
@@ -45,18 +45,18 @@ const loadPlayers = async () => {
       socialEmotional: 0,
       technical: 0
     }
-    
+
     data.forEach(player => {
       Object.keys(averages).forEach(category => {
         const values = Object.values(player[category])
         averages[category] += values.reduce((a, b) => a + b, 0) / values.length
       })
     })
-    
+
     Object.keys(averages).forEach(category => {
       averages[category] = (averages[category] / data.length).toFixed(1)
     })
-    
+
     teamSkillsData.value.datasets[0].data = [
       averages.psychological,
       averages.physical,

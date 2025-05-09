@@ -8,4 +8,11 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 
 
 # TODO: 
-- Team Average chart background not changing to dark theme
+~~- Team Average chart background not changing to dark theme~~
+- [ ] Minor UI tweaks
+- [ ] Hook up to database
+- [ ] Add a player creation form
+- [ ] Add a player deletion form
+- [ ] Add a player update form
+- [ ] Add a recenet activity form
+- [ ] 

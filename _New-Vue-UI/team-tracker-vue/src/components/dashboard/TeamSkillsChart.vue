@@ -1,14 +1,16 @@
-/* 
+/*
 - Purpose: Handles the card and layout for the chart.
 - What styles belong here: Only styles for the card, its header/body, and layout.
-- DO NOT put any chart (canvas) or Chart.js-specific styles here. 
+- DO NOT put any chart (canvas) or Chart.js-specific styles here.
 */
 
 <template>
-  <div class="team-skills-average-chart-title">Team Skills Averages</div>
-  <el-card>
-    <BarChart :data="data" :key="themeKey" />
-  </el-card>
+  <div class="team-skills-chart">
+    <div class="team-skills-average-chart-title">Team Skills Averages</div>
+    <el-card>
+      <BarChart :data="data" :key="themeKey" />
+    </el-card>
+  </div>
 </template>
 
 <script setup>
@@ -17,12 +19,20 @@ defineProps(['data', 'themeKey']);
 </script>
 
 <style scoped>
+.team-skills-chart {
+  padding: 0 16px; /* Add padding to prevent overflow caused by gutter */
+}
+
 .team-skills-average-chart-title {
   margin: 32px 0 12px 0;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: 0.04em;
+}
+
+:deep(.el-card) {
+  overflow: hidden; /* Prevent chart from overflowing */
 }
 
 :deep(.el-card),

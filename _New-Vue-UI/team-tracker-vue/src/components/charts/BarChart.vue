@@ -1,7 +1,8 @@
-/* 
+/*
 - Purpose: Handles only the chart rendering (canvas), including Chart.js options.
-- What styles belong here: Only Chart.js options and plugins for the chart itself (e.g., background color, axis label color, etc.).
-- DO NOT put card or layout styles here. 
+- What styles belong here: Only Chart.js options and plugins for the chart itself (e.g., background color, axis label
+color, etc.).
+- DO NOT put card or layout styles here.
 */
 
 <template>
@@ -37,86 +38,84 @@ const backgroundColorPlugin = {
   }
 };
 
-Chart.register(backgroundColorPlugin);
+// Chart.register(backgroundColorPlugin);
 
 const props = defineProps({ data: Object })
 
 // Reactive options to support theme switching
-const options = ref({});
+// const options = ref({});
 
-function getThemeOptions() {
-  const cardBg = getComputedStyle(document.body).getPropertyValue('--card-bg').trim() || '#fff';
-  const textMain = getComputedStyle(document.body).getPropertyValue('--text-main').trim() || '#23263a';
-  const isDark = document.body.classList.contains('dark-theme');
-  return {
-    responsive: true,
-    backgroundColor: cardBg,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          color: textMain,
-          font: {
-            family: "'Montserrat', 'Segoe UI', Arial, sans-serif", // Example font
-            size: 14,
-            weight: 'bold'
-          }
-        }
-      }
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: textMain,
-          font: {
-            family: "'Montserrat', 'Segoe UI', Arial, sans-serif",
-            size: 13,
-            weight: '500'
-          }
-        },
-        grid: { color: isDark ? '#444' : '#eee' }
-      },
-      y: {
-        beginAtZero: true,
-        max: 100,
-        ticks: {
-          color: textMain,
-          font: {
-            family: "'Montserrat', 'Segoe UI', Arial, sans-serif",
-            size: 13,
-            weight: '500'
-          }
-        },
-        grid: { color: isDark ? '#444' : '#eee' }
-      }
-    }
-  };
-}
+// function getThemeOptions() {
+//   const cardBg = getComputedStyle(document.body).getPropertyValue('--card-bg').trim() || '#fff';
+//   const textMain = getComputedStyle(document.body).getPropertyValue('--text-main').trim() || '#23263a';
+//   const isDark = document.body.classList.contains('dark-theme');
+//   return {
+//     responsive: true,
+//     backgroundColor: cardBg,
+//     plugins: {
+//       legend: {
+//         position: 'top',
+//         labels: {
+//           color: textMain,
+//           font: {
+//             family: "'Montserrat', 'Segoe UI', Arial, sans-serif", // Example font
+//             size: 14,
+//             weight: 'bold'
+//           }
+//         }
+//       }
+//     },
+//     scales: {
+//       x: {
+//         ticks: {
+//           color: textMain,
+//           font: {
+//             family: "'Montserrat', 'Segoe UI', Arial, sans-serif",
+//             size: 13,
+//             weight: '500'
+//           }
+//         },
+//         grid: { color: isDark ? '#444' : '#eee' }
+//       },
+//       y: {
+//         beginAtZero: true,
+//         max: 100,
+//         ticks: {
+//           color: textMain,
+//           font: {
+//             family: "'Montserrat', 'Segoe UI', Arial, sans-serif",
+//             size: 13,
+//             weight: '500'
+//           }
+//         },
+//         grid: { color: isDark ? '#444' : '#eee' }
+//       }
+//     }
+//   };
+// }
 
-// Update chart options on mount and when theme changes
-const updateOptions = () => {
-  options.value = getThemeOptions();
-};
+// // Update chart options on mount and when theme changes
+// const updateOptions = () => {
+//   options.value = getThemeOptions();
+// };
 
-// const barChartRef = ref(null);
+// // const barChartRef = ref(null);
 
-onMounted(async () => {
-  updateOptions();
-  // Wait for the chart to render
-  // await nextTick();
+// onMounted(async () => {
+//   updateOptions();
+//   // Wait for the chart to render
+//   // await nextTick();
 
-  // observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-});
+//   // observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+// });
 
-// Watch for theme changes (dark-theme class on body or localStorage)
-watch(
-  () => document.body.classList.contains('dark-theme'),
-  () => {
-    updateOptions();
-  }
-);
+// // Watch for theme changes (dark-theme class on body or localStorage)
+// watch(
+//   () => document.body.classList.contains('dark-theme'),
+//   () => {
+//     updateOptions();
+//   }
+// );
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

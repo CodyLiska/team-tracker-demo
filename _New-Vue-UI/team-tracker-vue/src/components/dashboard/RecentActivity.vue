@@ -1,33 +1,36 @@
 <template>
-    <div>
-      <div class="recent-activity-title">Recent Activity</div>
-      <el-row>
-        <el-col :span="24">
-          <el-card>
-            <el-card-body>
-              <el-table :data="recentActivity" style="width: 100%;">
-                <el-table-column prop="date" label="Date" width="120" />
-                <el-table-column prop="player" label="Player" width="140" />
-                <el-table-column prop="activity" label="Activity" />
-                <el-table-column prop="details" label="Details" />
-              </el-table>
-            </el-card-body>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
-  </template>
-  
-  <script setup>
-  defineProps({
-    recentActivity: Array
-  });
-  </script>
+  <div>
+    <div class="recent-activity-title">Recent Activity</div>
+    <el-row>
+      <el-col :span="24">
+        <el-card>
+          <el-card-body>
+            <el-table :data="recentActivity" style="width: 100%;">
+              <el-table-column prop="date" label="Date" width="120" />
+              <el-table-column prop="player" label="Player" width="140" />
+              <el-table-column prop="activity" label="Activity" />
+              <el-table-column prop="details" label="Details" />
+            </el-table>
+          </el-card-body>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script setup>
+defineProps({
+  recentActivity: Array
+});
+</script>
 
 <style scoped>
+.recent-activity {
+  padding: 0 16px; /* Add padding to prevent overflow caused by gutter */
+}
 
 .recent-activity-title {
-margin: 32px 0 12px 0;
+  margin: 32px 0 12px 0;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
@@ -41,9 +44,16 @@ margin: 32px 0 12px 0;
   color: var(--text-main) !important;
   border-radius: 16px !important;
 }
+
 body.dark-theme :deep(.el-card) {
   box-shadow: none !important;
 }
+
+:deep(.el-table) {
+  table-layout: fixed; /* Prevent table from exceeding container width */
+  word-wrap: break-word; /* Ensure long text wraps */
+}
+
 :deep(.el-table),
 :deep(.el-table__body),
 :deep(.el-table__body-wrapper),
@@ -68,10 +78,10 @@ body.dark-theme :deep(.el-dialog) {
 }
 
 body:not(.dark-theme) :deep(.el-overlay) {
-  background: rgba(0,0,0,0.6) !important;
+  background: rgba(0, 0, 0, 0.6) !important;
 }
 
 body.dark-theme :deep(.el-overlay) {
-  background: rgba(255,255,255,0.4) !important;
+  background: rgba(255, 255, 255, 0.4) !important;
 }
 </style>

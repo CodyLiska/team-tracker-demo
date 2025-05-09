@@ -1,4 +1,32 @@
 <template>
+  <PageWrapper>
+    <div class="coach-dashboard">
+      <StatsRow :statsArray="statsArray" />
+
+      <TeamSkillsChart :data="teamSkillsData" />
+
+      <PlayerCards :players="players" :getAverage="getAverage" @show-details="showPlayerDetails" />
+
+      <!-- Player Details Modal -->
+      <el-dialog v-model="playerDialogVisible"
+        :title="selectedPlayer ? selectedPlayer.name + ' - #' + selectedPlayer.number : ''" width="400px">
+        <div v-if="selectedPlayer">
+          <div style="margin-bottom: 10px;">Position: {{ selectedPlayer.position }}</div>
+          <div v-for="category in skillCategories" :key="category" style="margin-bottom: 8px;">
+            <strong>{{ categoryDisplay[category] }}:</strong>
+            <div v-for="(value, skill) in selectedPlayer[category]" :key="skill">
+              {{ skill }}: {{ value }}
+            </div>
+          </div>
+        </div>
+        <template #footer>
+          <el-button @click="playerDialogVisible = false">Close</el-button>
+        </template>
+      </el-dialog>
+
+      <RecentActivity :recentActivity="recentActivity" />
+    </div>
+  </PageWrapper>
   <div class="home-container">
     <h1 class="main-title">
       <span class="gradient-text">Soccer Player Tracker</span>
@@ -103,8 +131,9 @@
   align-items: center;
   cursor: pointer;
   transition: box-shadow 0.2s, background 0.2s;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
+
 .dashboard-card[disabled] {
   cursor: not-allowed;
   opacity: 0.7;
@@ -112,7 +141,7 @@
 
 .dashboard-card:hover:not([disabled]) {
   background: #23263a;
-  box-shadow: 0 4px 24px rgba(52,152,253,0.12);
+  box-shadow: 0 4px 24px rgba(52, 152, 253, 0.12);
 }
 
 .card-icon {
@@ -125,10 +154,26 @@
   height: 48px;
   border-radius: 50%;
 }
-.card-icon.blue { background: #3498fd20; color: #3498fd; }
-.card-icon.green { background: #2ecc4020; color: #2ecc40; }
-.card-icon.purple { background: #a259f720; color: #a259f7; }
-.card-icon.orange { background: #f39c1220; color: #f39c12; }
+
+.card-icon.blue {
+  background: #3498fd20;
+  color: #3498fd;
+}
+
+.card-icon.green {
+  background: #2ecc4020;
+  color: #2ecc40;
+}
+
+.card-icon.purple {
+  background: #a259f720;
+  color: #a259f7;
+}
+
+.card-icon.orange {
+  background: #f39c1220;
+  color: #f39c12;
+}
 
 .card-title {
   color: #fff;
