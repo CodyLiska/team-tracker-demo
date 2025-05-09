@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
-import Header from '../components/layouts/Header.vue'
-import Footer from '../components/layouts/Footer.vue'
+import Header from './Header.vue'
+import Footer from './Footer.vue'
 </script>
 
 <style scoped>
