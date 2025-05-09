@@ -1,32 +1,4 @@
 <template>
-  <PageWrapper>
-    <div class="coach-dashboard">
-      <StatsRow :statsArray="statsArray" />
-
-      <TeamSkillsChart :data="teamSkillsData" />
-
-      <PlayerCards :players="players" :getAverage="getAverage" @show-details="showPlayerDetails" />
-
-      <!-- Player Details Modal -->
-      <el-dialog v-model="playerDialogVisible"
-        :title="selectedPlayer ? selectedPlayer.name + ' - #' + selectedPlayer.number : ''" width="400px">
-        <div v-if="selectedPlayer">
-          <div style="margin-bottom: 10px;">Position: {{ selectedPlayer.position }}</div>
-          <div v-for="category in skillCategories" :key="category" style="margin-bottom: 8px;">
-            <strong>{{ categoryDisplay[category] }}:</strong>
-            <div v-for="(value, skill) in selectedPlayer[category]" :key="skill">
-              {{ skill }}: {{ value }}
-            </div>
-          </div>
-        </div>
-        <template #footer>
-          <el-button @click="playerDialogVisible = false">Close</el-button>
-        </template>
-      </el-dialog>
-
-      <RecentActivity :recentActivity="recentActivity" />
-    </div>
-  </PageWrapper>
   <div class="home-container">
     <h1 class="main-title">
       <span class="gradient-text">Soccer Player Tracker</span>
@@ -91,22 +63,16 @@
 }
 
 .main-title {
-  color: #fff;
+  color: var(--text-main);
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-align: center;
 }
 
-.gradient-text {
-  background: linear-gradient(90deg, #3498fd 20%, #a259f7 80%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .subtitle {
-  color: #bfc9d7;
+  color: var(--text-secondary);
+  /* Use --text-secondary for the subtitle */
   font-size: 1.1rem;
   margin-bottom: 36px;
   text-align: center;
@@ -122,7 +88,6 @@
 }
 
 .dashboard-card {
-  background: #191c2b;
   border: none;
   border-radius: 16px;
   margin-bottom: 24px;
@@ -140,7 +105,7 @@
 }
 
 .dashboard-card:hover:not([disabled]) {
-  background: #23263a;
+  background: var(--border);
   box-shadow: 0 4px 24px rgba(52, 152, 253, 0.12);
 }
 
@@ -176,14 +141,14 @@
 }
 
 .card-title {
-  color: #fff;
+  color: var(--text-main);
   font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 2px;
 }
 
 .card-desc {
-  color: #bfc9d7;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   font-weight: 400;
 }

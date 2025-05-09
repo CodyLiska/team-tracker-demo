@@ -65,7 +65,6 @@ const isDark = ref(false)
   padding: 0 24px;
   background: var(--header-bg);
   color: var(--text-main);
-  border-bottom: 1px solid var(--border);
 }
 
 .logo {
@@ -90,10 +89,22 @@ const isDark = ref(false)
 .el-menu-item {
   color: var(--text-secondary) !important;
   background: transparent !important;
+  transition: background 0.3s, color 0.3s
+}
+
+.el-menu-item:hover {
+  color: var(--text-main) !important;
+  background: var(--bg-secondary) !important;
 }
 
 .el-menu-item.is-active {
-  color: var(--primary) !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+}
+
+/* Override Element Plus default active styles */
+:deep(.el-menu-item.is-active) {
+  color: var(--text-secondary) !important;
   background: var(--bg-secondary) !important;
 }
 

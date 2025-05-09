@@ -4,15 +4,17 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 
+# TODO:
 
-
-
-# TODO: 
 ~~- Team Average chart background not changing to dark theme~~
-- [ ] Minor UI tweaks
-- [ ] Hook up to database
-- [ ] Add a player creation form
-- [ ] Add a player deletion form
-- [ ] Add a player update form
-- [ ] Add a recenet activity form
-- [ ] 
+
+- [x] Minor UI tweaks
+- [x] Hook up to database
+- [x] Add a player creation form
+- COACH DASHBOARD
+  - [ ] Add a recenet activity form and update the component to pull data from the database
+- PLAYERS CARDS
+  - [ ] Add a Delete button next to view details for each card and the functionality to delete a player
+- IN THE MODAL
+  - [ ] Update the modal to display the player's skills heirarchy data
+  - [ ] Add a player update button with a form to update the player's skills heirarchy data

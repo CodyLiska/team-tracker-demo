@@ -6,10 +6,10 @@
 
   /* Theme variables (light mode) */
   --bg-main: #ffd600; /* Light background */
-  --bg-secondary: #fff8e1; /* Slightly lighter background for contrast */
+  --bg-secondary: #F0F8FF; /* Slightly lighter background for contrast */
   --text-main: #000000; /* Main text color */
   --text-secondary: #5c5c6e; /* Secondary text color */
-  --card-bg: #ffffff; /* Card background */
+  --card-bg: #F0F8FF; /* Card background */
   --header-bg: #ffd600; /* Header background */
   --footer-bg: #ffd600; /* Footer background */
   --border: #ffab00; /* Border color */
@@ -101,7 +101,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.el-card,
+/* .el-card,
 .el-card__body,
 .el-card__header,
 .el-card.is-always-shadow {
@@ -109,5 +109,5 @@ button:focus-visible {
   background-color: var(--card-bg) !important;
   color: var(--text-main) !important;
   border-radius: 16px !important;
-  box-shadow: none !important;
-}
+  box-shadow: none !important; 
+}*/

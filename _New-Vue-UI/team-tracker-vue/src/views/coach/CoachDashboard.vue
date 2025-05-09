@@ -2,9 +2,17 @@
   <PageWrapper>
     <div class="main-container">
       <div class="coach-dashboard">
-        <StatsRow :statsArray="statsArray" />
 
+        <StatsRow :statsArray="statsArray" />
         <TeamSkillsChart :data="teamSkillsData" />
+        <div v-if="teamSkillsData.labels[0] === 'No Data'">
+          No player data available. Add players to see the chart.
+        </div>
+
+        <!-- Add Player Button -->
+        <div class="add-player-button">
+          <el-button type="primary" @click="navigateToCreatePlayer">Add New Player</el-button>
+        </div>
 
         <PlayerCards :players="players" :getAverage="getAverage" @show-details="showPlayerDetails" />
 
@@ -33,138 +41,157 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
-import StatsRow from '../../components/dashboard/StatsRow.vue'
-import TeamSkillsChart from '../../components/dashboard/TeamSkillsChart.vue'
-import PlayerCards from '../../components/dashboard/PlayerCards.vue'
-import RecentActivity from '../../components/dashboard/RecentActivity.vue'
+// import axios from 'axios'
+import { useRouter } from 'vue-router';
+import { playerService } from '../../services/playerService';
+import PageWrapper from '../../components/ui/PageWrapper.vue';
+import StatsRow from '../../components/dashboard/StatsRow.vue';
+import TeamSkillsChart from '../../components/dashboard/TeamSkillsChart.vue';
+import PlayerCards from '../../components/dashboard/PlayerCards.vue';
+import RecentActivity from '../../components/dashboard/RecentActivity.vue';
 
 // --- State and Logic ---
+const router = useRouter();
 const players = ref([])
 const playerDialogVisible = ref(false)
 const selectedPlayer = ref(null)
-const stats = ref({
-  totalPlayers: 0,
-  gamesPlayed: 0,
-  winRate: '0%',
-  teamRating: 0
-})
+const recentActivity = ref([]);
 
+// --- STATS ROW ---
 const statsArray = computed(() => [
-  { label: 'Total Players', value: stats.value.totalPlayers, desc: 'Players on roster' },
-  { label: 'Games Played', value: stats.value.gamesPlayed, desc: 'Total games played' },
-  { label: 'Win Rate', value: stats.value.winRate, desc: 'Win percentage' },
-  { label: 'Team Rating', value: stats.value.teamRating, desc: 'Avg. technical rating' }
-])
+  { label: 'Total Players', value: players.value.length, desc: 'Players on roster' },
+  { label: 'Games Played', value: 0, desc: 'Total games played' },
+  { label: 'Win Rate', value: '0%', desc: 'Win percentage' },
+  { label: 'Team Rating', value: 0, desc: 'Avg. technical rating' },
+]);
 
+
+// --- TEAM SKILLS CHART ---
 const teamSkillsData = ref({
-  labels: ['Psychological', 'Physical', 'Social/Emotional', 'Technical'],
+  labels: ['No Data Available'], // Informative label
   datasets: [
     {
-      label: 'Team Average',
-      backgroundColor: '#3498fd',
-      data: [0, 0, 0, 0]
-    }
-  ]
-})
+      label: 'No Data',
+      backgroundColor: '#e0e0e0', // Light gray for an empty graph
+      data: [0], // Single data point
+    },
+  ],
+});
 
-const loadPlayers = async () => {
+// Navigate to CreatePlayer.vue
+const navigateToCreatePlayer = () => {
+  console.log('Navigating to /create-player');
+  router.push('/create-player');
+};
+
+const fetchTeamSkillsData = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/players')
-    players.value = response.data
+    const players = await playerService.getAllPlayers(); // Fetch all players
+    if (players.length === 0) {
+      return; // No players, keep the default empty chart
+    }
 
-    // Calculate team averages for each category
-    const categoryAverages = {
+    // Initialize totals and counts for each category
+    const totals = {
       psychological: 0,
       physical: 0,
       socialEmotional: 0,
-      technical: 0
-    }
-    const categoryCounts = {
+      technical: 0,
+    };
+    const counts = {
       psychological: 0,
       physical: 0,
       socialEmotional: 0,
-      technical: 0
-    }
+      technical: 0,
+    };
 
-    players.value.forEach(player => {
-      Object.keys(categoryAverages).forEach(category => {
-        const values = Object.values(player[category] || {})
-        categoryAverages[category] += values.reduce((a, b) => a + b, 0)
-        categoryCounts[category] += values.length
-      })
-    })
+    // Calculate totals and counts
+    players.forEach((player) => {
+      // Calculate averages for psychological
+      Object.values(player.psychological).forEach((value) => {
+        totals.psychological += value;
+        counts.psychological++;
+      });
 
-    Object.keys(categoryAverages).forEach(category => {
-      categoryAverages[category] = categoryCounts[category]
-        ? (categoryAverages[category] / categoryCounts[category]).toFixed(1)
-        : 0
-    })
+      // Calculate averages for physical
+      Object.values(player.physical).forEach((value) => {
+        totals.physical += value;
+        counts.physical++;
+      });
 
+      // Calculate averages for socialEmotional
+      Object.values(player.socialEmotional).forEach((value) => {
+        totals.socialEmotional += value;
+        counts.socialEmotional++;
+      });
+
+      // Calculate averages for technical
+      Object.values(player.technical).forEach((value) => {
+        totals.technical += value;
+        counts.technical++;
+      });
+    });
+
+    // Calculate averages
+    const averages = {
+      psychological: counts.psychological ? (totals.psychological / counts.psychological).toFixed(1) : 0,
+      physical: counts.physical ? (totals.physical / counts.physical).toFixed(1) : 0,
+      socialEmotional: counts.socialEmotional
+        ? (totals.socialEmotional / counts.socialEmotional).toFixed(1)
+        : 0,
+      technical: counts.technical ? (totals.technical / counts.technical).toFixed(1) : 0,
+    };
+
+    // Update chart data
     teamSkillsData.value = {
-      ...teamSkillsData.value,
+      labels: ['Psychological', 'Physical', 'Social/Emotional', 'Technical'],
       datasets: [
         {
-          ...teamSkillsData.value.datasets[0],
+          label: 'Team Average',
+          backgroundColor: '#3498fd',
           data: [
-            parseFloat(categoryAverages.psychological),
-            parseFloat(categoryAverages.physical),
-            parseFloat(categoryAverages.socialEmotional),
-            parseFloat(categoryAverages.technical)
-          ]
-        }
-      ]
-    }
+            parseFloat(averages.psychological),
+            parseFloat(averages.physical),
+            parseFloat(averages.socialEmotional),
+            parseFloat(averages.technical),
+          ],
+        },
+      ],
+    };
   } catch (error) {
-    console.error('Error loading players:', error)
+    console.error('Error fetching team skills data:', error);
   }
-}
+};
 
-const loadStats = async () => {
+const getAverage = (skills) => {
+  const values = Object.values(skills);
+  return (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
+};
+
+// --- PLAYERS CARDS ---
+const fetchPlayers = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/stats')
-    stats.value = response.data
+    players.value = await playerService.getAllPlayers();
   } catch (error) {
-    console.error('Error loading stats:', error)
+    console.error('Error fetching players:', error);
   }
-}
+};
 
-const themeKey = ref('light')
+const showPlayerDetails = (player) => {
+  selectedPlayer.value = player;
+  playerDialogVisible.value = true;
+};
 
+
+
+// --- RECENT ACTIVITY ---
+
+
+// Call this function when the component is mounted
 onMounted(() => {
-  // Set initial value
-  themeKey.value = document.body.classList.contains('dark-theme') ? 'dark' : 'light'
-
-  const observer = new MutationObserver(() => {
-    themeKey.value = document.body.classList.contains('dark-theme') ? 'dark' : 'light'
-  })
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-  loadPlayers()
-  loadStats()
-})
-
-const skillCategories = ['psychological', 'physical', 'socialEmotional', 'technical']
-const categoryDisplay = {
-  psychological: 'Psychological',
-  physical: 'Physical',
-  socialEmotional: 'Social/Emotional',
-  technical: 'Technical'
-}
-
-const getAverage = skills => {
-  const values = Object.values(skills)
-  return (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1)
-}
-
-const showPlayerDetails = player => {
-  selectedPlayer.value = player
-  playerDialogVisible.value = true
-}
-
-const recentActivity = ref([
-  { date: 'Today', player: 'John Doe', activity: 'Training Complete', details: '90 minutes' },
-  { date: 'Yesterday', player: 'Team', activity: 'Match Won', details: '3-1 vs Eagles' }
-])
+  fetchPlayers(); // Fetch players for PlayerCards
+  fetchTeamSkillsData(); // Fetch data for the chart
+});
 </script>
 
 <style scoped>
