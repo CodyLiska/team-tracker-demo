@@ -43,10 +43,6 @@ const options = {
       display: true,
       position: 'top',
     },
-    title: {
-      display: true,
-      text: 'Team Skills Averages',
-    },
   },
 };
 

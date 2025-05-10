@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const playerRoutes = require('./routes/playerRoutes');
 const statsRoutes = require('./routes/gameStatRoutes');
+const recentActivityRoutes = require('./routes/recentActivity');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 // Routes
 app.use('/api/players', playerRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/recent-activity', recentActivityRoutes);
 
 const PORT = process.env.PORT || 5000;
 

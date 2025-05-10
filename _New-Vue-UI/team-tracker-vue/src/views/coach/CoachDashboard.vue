@@ -33,7 +33,8 @@
           </template>
         </el-dialog>
 
-        <RecentActivity :recentActivity="recentActivity" />
+        <RecentActivity :recentActivity="recentActivity" :onDelete="fetchRecentActivity" />
+        <el-button type="primary" @click="goToAddActivity">Add Activity</el-button>
       </div>
     </div>
   </PageWrapper>
@@ -44,6 +45,7 @@ import { ref, onMounted, computed } from 'vue'
 // import axios from 'axios'
 import { useRouter } from 'vue-router';
 import { playerService } from '../../services/playerService';
+import { recentActivityService } from '../../services/recentActivityService';
 import PageWrapper from '../../components/ui/PageWrapper.vue';
 import StatsRow from '../../components/dashboard/StatsRow.vue';
 import TeamSkillsChart from '../../components/dashboard/TeamSkillsChart.vue';
@@ -185,12 +187,24 @@ const showPlayerDetails = (player) => {
 
 
 // --- RECENT ACTIVITY ---
+const fetchRecentActivity = async () => {
+  try {
+    recentActivity.value = await recentActivityService.getRecentActivity();
+  } catch (error) {
+    console.error('Error fetching recent activity:', error);
+  }
+};
+
+const goToAddActivity = () => {
+  router.push('/add-activity');
+};
 
 
 // Call this function when the component is mounted
 onMounted(() => {
   fetchPlayers(); // Fetch players for PlayerCards
   fetchTeamSkillsData(); // Fetch data for the chart
+  fetchRecentActivity(); // Fetch recent activity
 });
 </script>
 
