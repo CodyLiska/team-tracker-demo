@@ -71,22 +71,53 @@ const deleteActivity = async (id) => {
 <style scoped>
 .activity-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 1rem;
+  margin-bottom: 2rem;
+  /* Add space below the table */
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .activity-table th,
 .activity-table td {
-  border: 1px solid #bbb;
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
   padding: 0.75rem 1rem;
   text-align: left;
+}
+
+.activity-table th:last-child,
+.activity-table td:last-child {
+  border-right: none;
+}
+
+.activity-table tr:last-child td {
+  border-bottom: none;
 }
 
 .activity-table th {
   background: #f5f5f5;
   font-weight: bold;
+}
+
+.activity-table thead tr:first-child th:first-child {
+  border-top-left-radius: 16px;
+}
+
+.activity-table thead tr:first-child th:last-child {
+  border-top-right-radius: 16px;
+}
+
+.activity-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 16px;
+}
+
+.activity-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 16px;
 }
 
 .delete-cell {

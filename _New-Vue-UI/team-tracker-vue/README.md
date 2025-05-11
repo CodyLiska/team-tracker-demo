@@ -13,14 +13,20 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 - [x] Add a player creation form
 - COACH DASHBOARD
   - [x] Add a recenet activity form and update the component to pull data from the database
-  - [ ] Trash Can Icon for Recent Activity doesn't delete the activity and it should also refresh the list
+  - [x] Trash Can Icon for Recent Activity doesn't delete the activity and it should also refresh the list
   - [ ] Team Stats > Win Rate needs to be calculated, currently it's hardcoded to 0%
   - [ ] Team Stats > Team Rating needs to be calculated, currently it's hardcoded to 0
 - PLAYERS CARDS
-  - [ ] Add a Delete button next to view details for each card and the functionality to delete a player
+  - [x] Add a Delete button next to view details for each card and the functionality to delete a player
 - IN THE MODAL
-  - [ ] Update the modal to display the player's skills heirarchy data
-  - [ ] Add a player update button with a form to update the player's skills heirarchy data
+  - [x] Update the modal to display the player's skills heirarchy data
+  - [x] Add a player update button with a form to update the player's skills heirarchy data
+- PLAYER MODEL
+- [ ] add robustness to the model
+  - [ ] parents name
+  - [ ] parnets contact info (phone, email, etc)
+- ACTIVITY TABLE
+- [ ] possible have it update with data from sport easy app
 
 
 ## Down the road

@@ -39,4 +39,9 @@ export const playerService = {
       throw error;
     }
   },
+
+  archivePlayer:async (playerId) => {
+    await axios.post(`${API_URL}/${playerId}/archive`);
+  },
+  
 };

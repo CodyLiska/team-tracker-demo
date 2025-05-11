@@ -12,6 +12,6 @@ export const recentActivityService = {
     return response.data;
   },
   async deleteActivity(id) {
-    await axios.delete(`API_URL/${id}`);
+    await axios.delete(`${API_URL}/${id}`);
   }
 };

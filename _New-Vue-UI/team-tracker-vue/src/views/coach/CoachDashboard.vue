@@ -5,7 +5,7 @@
 
         <StatsRow :statsArray="statsArray" />
         <TeamSkillsChart :data="teamSkillsData" />
-        <div v-if="teamSkillsData.labels[0] === 'No Data'">
+        <div v-if="teamSkillsData.labels[0] === 'No Data Available'">
           No player data available. Add players to see the chart.
         </div>
 
@@ -14,27 +14,15 @@
           <el-button type="primary" @click="navigateToCreatePlayer">Add New Player</el-button>
         </div>
 
+        <!-- Player Cards -->
         <PlayerCards :players="players" :getAverage="getAverage" @show-details="showPlayerDetails" />
 
-        <!-- Player Details Modal -->
-        <el-dialog v-model="playerDialogVisible"
-          :title="selectedPlayer ? selectedPlayer.name + ' - #' + selectedPlayer.number : ''" width="400px">
-          <div v-if="selectedPlayer">
-            <div style="margin-bottom: 10px;">Position: {{ selectedPlayer.position }}</div>
-            <div v-for="category in skillCategories" :key="category" style="margin-bottom: 8px;">
-              <strong>{{ categoryDisplay[category] }}:</strong>
-              <div v-for="(value, skill) in selectedPlayer[category]" :key="skill">
-                {{ skill }}: {{ value }}
-              </div>
-            </div>
-          </div>
-          <template #footer>
-            <el-button @click="playerDialogVisible = false">Close</el-button>
-          </template>
-        </el-dialog>
+        <!-- Player Details Modal (full stats hierarchy) -->
+        <PlayerDetail v-if="selectedPlayer" :player="selectedPlayer" :visible="playerDialogVisible"
+          @update:visible="playerDialogVisible = $event" />
 
         <RecentActivity :recentActivity="recentActivity" :onDelete="fetchRecentActivity" />
-        <el-button type="primary" @click="goToAddActivity">Add Activity</el-button>
+        <el-button type="primary" @click="goToAddActivity" style="margin-top: 24px;">Add Activity</el-button>
       </div>
     </div>
   </PageWrapper>
@@ -50,6 +38,7 @@ import PageWrapper from '../../components/ui/PageWrapper.vue';
 import StatsRow from '../../components/dashboard/StatsRow.vue';
 import TeamSkillsChart from '../../components/dashboard/TeamSkillsChart.vue';
 import PlayerCards from '../../components/dashboard/PlayerCards.vue';
+import PlayerDetail from '../../components/dashboard/PlayerDetail.vue';
 import RecentActivity from '../../components/dashboard/RecentActivity.vue';
 
 // --- State and Logic ---
@@ -57,6 +46,7 @@ const router = useRouter();
 const players = ref([])
 const playerDialogVisible = ref(false)
 const selectedPlayer = ref(null)
+const detailDialogVisible = ref(false);
 const recentActivity = ref([]);
 
 // --- STATS ROW ---

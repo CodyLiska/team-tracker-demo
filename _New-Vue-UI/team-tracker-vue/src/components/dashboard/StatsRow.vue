@@ -30,7 +30,8 @@ defineProps({
 }
 
 .stats-row {
-  padding: 0 16px; /* Add padding to prevent overflow caused by gutter */
+  padding: 0 16px;
+  /* Add padding to prevent overflow caused by gutter */
 }
 
 .dashboard-stats-row {
