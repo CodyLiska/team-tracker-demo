@@ -14,8 +14,8 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 - COACH DASHBOARD
   - [x] Add a recenet activity form and update the component to pull data from the database
   - [x] Trash Can Icon for Recent Activity doesn't delete the activity and it should also refresh the list
-  - [ ] Team Stats > Win Rate needs to be calculated, currently it's hardcoded to 0%
-  - [ ] Team Stats > Team Rating needs to be calculated, currently it's hardcoded to 0
+  - [x] Team Stats > Win Rate needs to be calculated, currently it's hardcoded to 0%
+  - [x] Team Stats > Team Rating needs to be calculated, currently it's hardcoded to 0
 - PLAYERS CARDS
   - [x] Add a Delete button next to view details for each card and the functionality to delete a player
 - IN THE MODAL
@@ -26,6 +26,7 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
   - [ ] parents name
   - [ ] parnets contact info (phone, email, etc)
 - ACTIVITY TABLE
+- [ ] delete button for game outcomes isn't deleting from the table
 - [ ] possible have it update with data from sport easy app
 
 

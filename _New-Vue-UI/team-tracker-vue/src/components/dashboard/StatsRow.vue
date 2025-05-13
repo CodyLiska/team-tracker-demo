@@ -12,6 +12,9 @@
 </template>
 
 <script setup>
+import { defineProps } from 'vue';
+import { teamStatsService } from '../../services/teamStatsService';
+
 defineProps({
   statsArray: {
     type: Array,

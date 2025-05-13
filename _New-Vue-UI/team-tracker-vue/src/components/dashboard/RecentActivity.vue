@@ -1,24 +1,3 @@
-<!-- <template>
-  <div>
-    <div class="recent-activity-title">Recent Activity</div>
-    <el-row>
-      <el-col :span="24">
-        <el-card>
-          <el-card-body>
-            <el-table :data="recentActivity" style="width: 100%;">
-              <el-table-column prop="date" label="Date" width="120" />
-              <el-table-column prop="player" label="Player" width="140" />
-              <el-table-column prop="activity" label="Activity" />
-              <el-table-column prop="details" label="Details" />
-              <el-table-column prop="delete" label="Delete" />
-            </el-table>
-          </el-card-body>
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
-</template> -->
-
 <template>
   <div>
     <h3>Recent Activity</h3>
@@ -64,7 +43,7 @@ const props = defineProps({
 
 const deleteActivity = async (id) => {
   await recentActivityService.deleteActivity(id);
-  if (props.onDelete) props.onDelete();
+  if (props.onDelete) this.$emit('delete', row);
 };
 </script>
 

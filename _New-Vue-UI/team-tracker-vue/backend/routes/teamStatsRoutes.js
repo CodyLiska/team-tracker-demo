@@ -1,23 +1,25 @@
-// backend/routes/gameStatRoutes.js
-const express = require('express');
+// backend/routes/teamStatRoutes.js
+const express = require("express");
 const router = express.Router();
-const Player = require('../models/Player');
-const Game = require('../models/Game');
+const Player = require("../models/Player");
+const Game = require("../models/Game");
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const totalPlayers = await Player.countDocuments();
     const gamesPlayed = await Game.countDocuments();
-    const wins = await Game.countDocuments({ result: 'win' });
-    const winRate = gamesPlayed > 0 ? ((wins / gamesPlayed) * 100).toFixed(1) + '%' : '0%';
+    const wins = await Game.countDocuments({ result: "win" });
+    const winRate =
+      gamesPlayed > 0 ? ((wins / gamesPlayed) * 100).toFixed(1) + "%" : "0%";
 
     // Example teamRating calculation: average of all player technical scores
     const players = await Player.find();
     let teamRating = 0;
     let playerCount = players.length;
     if (playerCount > 0) {
-      let total = 0, count = 0;
-      players.forEach(player => {
+      let total = 0,
+        count = 0;
+      players.forEach((player) => {
         const tech = Object.values(player.technical || {});
         if (tech.length) {
           total += tech.reduce((a, b) => a + b, 0);
@@ -31,10 +33,10 @@ router.get('/', async (req, res) => {
       totalPlayers,
       gamesPlayed,
       winRate,
-      teamRating
+      teamRating,
     });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch stats' });
+    res.status(500).json({ error: "Failed to fetch stats" });
   }
 });
 

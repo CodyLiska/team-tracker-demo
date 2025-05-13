@@ -3,8 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const playerRoutes = require('./routes/playerRoutes');
-const statsRoutes = require('./routes/gameStatRoutes');
-const recentActivityRoutes = require('./routes/recentActivity');
+const gameRoutes = require('./routes/gameRoutes');
+const statsRoutes = require('./routes/teamStatsRoutes');
+const recentActivityRoutes = require('./routes/recentActivityRoutes');
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.use(express.json());
 app.use('/api/players', playerRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/recent-activity', recentActivityRoutes);
+app.use('/api/team-stats', statsRoutes);
+app.use('/api/games', gameRoutes);
 
 const PORT = process.env.PORT || 5000;
 

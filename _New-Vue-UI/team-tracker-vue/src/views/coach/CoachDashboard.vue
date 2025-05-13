@@ -4,6 +4,12 @@
       <div class="coach-dashboard">
 
         <StatsRow :statsArray="statsArray" />
+        <!-- Add Game Outcome Button -->
+        <div class="add-game-outcome-button">
+          <el-button type="primary" @click="navigateToAddGameOutcome" style="margin-top: 10px;">Add Game
+            Outcome</el-button>
+        </div>
+
         <TeamSkillsChart :data="teamSkillsData" />
         <div v-if="teamSkillsData.labels[0] === 'No Data Available'">
           No player data available. Add players to see the chart.
@@ -21,8 +27,8 @@
         <PlayerDetail v-if="selectedPlayer" :player="selectedPlayer" :visible="playerDialogVisible"
           @update:visible="playerDialogVisible = $event" />
 
-        <RecentActivity :recentActivity="recentActivity" :onDelete="fetchRecentActivity" />
-        <el-button type="primary" @click="goToAddActivity" style="margin-top: 24px;">Add Activity</el-button>
+        <RecentActivity :recentActivity="combinedRecent" @delete="handleDeleteRecent"/>
+        <el-button type="primary" @click="goToAddActivity" style="margin-top: 10px;">Add Activity</el-button>
       </div>
     </div>
   </PageWrapper>
@@ -30,57 +36,93 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-// import axios from 'axios'
 import { useRouter } from 'vue-router';
 import { playerService } from '../../services/playerService';
 import { recentActivityService } from '../../services/recentActivityService';
+import { teamStatsService } from '../../services/teamStatsService';
 import PageWrapper from '../../components/ui/PageWrapper.vue';
 import StatsRow from '../../components/dashboard/StatsRow.vue';
 import TeamSkillsChart from '../../components/dashboard/TeamSkillsChart.vue';
 import PlayerCards from '../../components/dashboard/PlayerCards.vue';
 import PlayerDetail from '../../components/dashboard/PlayerDetail.vue';
 import RecentActivity from '../../components/dashboard/RecentActivity.vue';
+import axios from 'axios';
 
 // --- State and Logic ---
 const router = useRouter();
 const players = ref([])
 const playerDialogVisible = ref(false)
 const selectedPlayer = ref(null)
-const detailDialogVisible = ref(false);
 const recentActivity = ref([]);
+const recentGames = ref([]);
+
+// --- TEAM STATS (from backend) ---
+const teamStats = ref({
+  totalPlayers: 0,
+  gamesPlayed: 0,
+  winRate: '0%',
+  teamRating: 0,
+});
 
 // --- STATS ROW ---
 const statsArray = computed(() => [
-  { label: 'Total Players', value: players.value.length, desc: 'Players on roster' },
-  { label: 'Games Played', value: 0, desc: 'Total games played' },
-  { label: 'Win Rate', value: '0%', desc: 'Win percentage' },
-  { label: 'Team Rating', value: 0, desc: 'Avg. technical rating' },
+  { label: 'Total Players', value: teamStats.value.totalPlayers, desc: 'Players on roster' },
+  { label: 'Games Played', value: teamStats.value.gamesPlayed, desc: 'Total games played' },
+  { label: 'Win Rate', value: teamStats.value.winRate, desc: 'Win percentage' },
+  { label: 'Team Rating', value: teamStats.value.teamRating, desc: 'Avg. technical rating' },
 ]);
-
 
 // --- TEAM SKILLS CHART ---
 const teamSkillsData = ref({
-  labels: ['No Data Available'], // Informative label
+  labels: ['No Data Available'],
   datasets: [
     {
       label: 'No Data',
-      backgroundColor: '#e0e0e0', // Light gray for an empty graph
-      data: [0], // Single data point
+      backgroundColor: '#e0e0e0',
+      data: [0],
     },
   ],
 });
 
 // Navigate to CreatePlayer.vue
 const navigateToCreatePlayer = () => {
-  console.log('Navigating to /create-player');
   router.push('/create-player');
+};
+
+// Navigate to AddGameOutcome.vue
+const navigateToAddGameOutcome = () => {
+  router.push('/add-game-outcome');
+};
+
+// Fetch team stats from backend
+const fetchTeamStats = async () => {
+  try {
+    const stats = await teamStatsService.getTeamStats();
+    teamStats.value.totalPlayers = stats.totalPlayers;
+    teamStats.value.gamesPlayed = stats.gamesPlayed;
+    teamStats.value.winRate = stats.winRate;
+    // teamRating will be set after bar chart averages are calculated
+  } catch (err) {
+    console.error('Error fetching team stats:', err);
+  }
 };
 
 const fetchTeamSkillsData = async () => {
   try {
-    const players = await playerService.getAllPlayers(); // Fetch all players
-    if (players.length === 0) {
-      return; // No players, keep the default empty chart
+    const playersArr = await playerService.getAllPlayers();
+    if (playersArr.length === 0) {
+      teamSkillsData.value = {
+        labels: ['No Data Available'],
+        datasets: [
+          {
+            label: 'No Data',
+            backgroundColor: '#e0e0e0',
+            data: [0],
+          },
+        ],
+      };
+      teamStats.value.teamRating = 0;
+      return;
     }
 
     // Initialize totals and counts for each category
@@ -98,27 +140,20 @@ const fetchTeamSkillsData = async () => {
     };
 
     // Calculate totals and counts
-    players.forEach((player) => {
-      // Calculate averages for psychological
-      Object.values(player.psychological).forEach((value) => {
+    playersArr.forEach((player) => {
+      Object.values(player.psychological || {}).forEach((value) => {
         totals.psychological += value;
         counts.psychological++;
       });
-
-      // Calculate averages for physical
-      Object.values(player.physical).forEach((value) => {
+      Object.values(player.physical || {}).forEach((value) => {
         totals.physical += value;
         counts.physical++;
       });
-
-      // Calculate averages for socialEmotional
-      Object.values(player.socialEmotional).forEach((value) => {
+      Object.values(player.socialEmotional || {}).forEach((value) => {
         totals.socialEmotional += value;
         counts.socialEmotional++;
       });
-
-      // Calculate averages for technical
-      Object.values(player.technical).forEach((value) => {
+      Object.values(player.technical || {}).forEach((value) => {
         totals.technical += value;
         counts.technical++;
       });
@@ -150,6 +185,18 @@ const fetchTeamSkillsData = async () => {
         },
       ],
     };
+
+    // Calculate team rating as the average of the four category averages
+    const avgValues = [
+      parseFloat(averages.psychological),
+      parseFloat(averages.physical),
+      parseFloat(averages.socialEmotional),
+      parseFloat(averages.technical),
+    ];
+    const teamRating =
+      avgValues.reduce((sum, val) => sum + val, 0) / avgValues.length;
+    teamStats.value.teamRating = teamRating.toFixed(2);
+
   } catch (error) {
     console.error('Error fetching team skills data:', error);
   }
@@ -174,8 +221,6 @@ const showPlayerDetails = (player) => {
   playerDialogVisible.value = true;
 };
 
-
-
 // --- RECENT ACTIVITY ---
 const fetchRecentActivity = async () => {
   try {
@@ -189,12 +234,69 @@ const goToAddActivity = () => {
   router.push('/add-activity');
 };
 
+const fetchRecentGames = async () => {
+  try {
+    // Fetch the most recent games, e.g., last 5
+    const response = await axios.get('http://localhost:5000/api/games?limit=5&sort=-date');
+    recentGames.value = response.data;
+  } catch (error) {
+    console.error('Error fetching recent games:', error);
+  }
+};
+
+const combinedRecent = computed(() => {
+  // Helper to format date as MM/DD/YYYY
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return '';
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+  };
+
+  // Map games to the same shape as activities
+  const mappedGames = recentGames.value.map(game => ({
+    _id: game._id,
+    date: formatDate(game.date),
+    player: 'Team',
+    activity: 'Game Outcome',
+    details: `vs ${game.opponent}: ${game.score.us}-${game.score.them} (${game.result})`
+  }));
+
+  // Map activities and format their date too
+  const mappedActivities = recentActivity.value.map(act => ({
+    ...act,
+    date: formatDate(act.date)
+  }));
+
+  const handleDeleteRecent = async (row) => {
+    try {
+      if (row.activity === 'Game Outcome') {
+        // Delete game
+        await axios.delete(`http://localhost:5000/api/games/${row._id}`);
+        await fetchRecentGames();
+      } else {
+        // Delete activity
+        await recentActivityService.deleteActivity(row._id);
+        await fetchRecentActivity();
+      }
+    } catch (error) {
+      console.error('Error deleting row:', error);
+    }
+  };
+
+  // Combine and sort by date descending
+  return [...mappedActivities, ...mappedGames].sort((a, b) => new Date(b.date) - new Date(a.date));
+});
 
 // Call this function when the component is mounted
 onMounted(() => {
-  fetchPlayers(); // Fetch players for PlayerCards
-  fetchTeamSkillsData(); // Fetch data for the chart
-  fetchRecentActivity(); // Fetch recent activity
+  fetchPlayers();
+  fetchTeamStats();
+  fetchTeamSkillsData();
+  fetchRecentActivity();
+  fetchRecentGames();
 });
 </script>
 
@@ -205,12 +307,10 @@ onMounted(() => {
   padding: 0 16px;
   width: 100%;
   overflow-x: hidden;
-  /* Prevent horizontal scrolling */
 }
 
 .coach-dashboard {
   padding: 16px 0 32px 0;
   overflow-x: hidden;
-  /* Prevent horizontal scrolling */
 }
 </style>
