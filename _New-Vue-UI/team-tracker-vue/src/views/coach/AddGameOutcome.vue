@@ -58,7 +58,7 @@ const submitForm = async () => {
     };
     await axios.post('http://localhost:5000/api/games', payload);
     ElMessage.success('Game outcome added!');
-    router.push('/coach'); // Redirect to dashboard or wherever you want
+    router.push('/coach');
   } catch (err) {
     ElMessage.error('Failed to add game outcome.');
   }

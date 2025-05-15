@@ -4,7 +4,6 @@
       <div class="coach-dashboard">
 
         <StatsRow :statsArray="statsArray" />
-        <!-- Add Game Outcome Button -->
         <div class="add-game-outcome-button">
           <el-button type="primary" @click="navigateToAddGameOutcome" style="margin-top: 10px;">Add Game
             Outcome</el-button>
@@ -27,7 +26,7 @@
         <PlayerDetail v-if="selectedPlayer" :player="selectedPlayer" :visible="playerDialogVisible"
           @update:visible="playerDialogVisible = $event" />
 
-        <RecentActivity :recentActivity="combinedRecent" @delete="handleDeleteRecent"/>
+        <RecentActivity :recentActivity="combinedRecent" @delete="handleDeleteRecent" />
         <el-button type="primary" @click="goToAddActivity" style="margin-top: 10px;">Add Activity</el-button>
       </div>
     </div>
@@ -270,25 +269,26 @@ const combinedRecent = computed(() => {
     date: formatDate(act.date)
   }));
 
-  const handleDeleteRecent = async (row) => {
-    try {
-      if (row.activity === 'Game Outcome') {
-        // Delete game
-        await axios.delete(`http://localhost:5000/api/games/${row._id}`);
-        await fetchRecentGames();
-      } else {
-        // Delete activity
-        await recentActivityService.deleteActivity(row._id);
-        await fetchRecentActivity();
-      }
-    } catch (error) {
-      console.error('Error deleting row:', error);
-    }
-  };
 
   // Combine and sort by date descending
   return [...mappedActivities, ...mappedGames].sort((a, b) => new Date(b.date) - new Date(a.date));
 });
+
+const handleDeleteRecent = async (row) => {
+  try {
+    if (row.activity === 'Game Outcome') {
+      // Delete game
+      await axios.delete(`http://localhost:5000/api/games/${row._id}`);
+      await fetchRecentGames();
+    } else {
+      // Delete activity
+      await recentActivityService.deleteActivity(row._id);
+      await fetchRecentActivity();
+    }
+  } catch (error) {
+    console.error('Error deleting row:', error);
+  }
+};
 
 // Call this function when the component is mounted
 onMounted(() => {

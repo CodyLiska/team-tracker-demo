@@ -36,7 +36,7 @@ const handleAddActivity = async () => {
   const now = new Date();
   activity.value.date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
   await recentActivityService.addActivity(activity.value);
-  router.push('/coach'); // Redirect back to dashboard
+  router.push('/coach');
 };
 </script>
 

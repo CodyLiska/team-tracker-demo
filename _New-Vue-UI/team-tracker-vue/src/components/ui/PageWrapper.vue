@@ -10,6 +10,6 @@
   margin: 0 auto;
   padding: 0 16px;
   width: 100%;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden;
 }
 </style>

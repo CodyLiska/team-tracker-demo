@@ -1,11 +1,3 @@
-/*
-- Purpose: Handles the card and layout for the chart.
-- What styles belong here: Only styles for the card, its header/body, and layout.
-- DO NOT put any chart (canvas) or Chart.js-specific styles here.
-
-- Purpose: Handles the actual rendering of the bar chart using the vue-chartjs library.
-*/
-
 <template>
   <div class="team-skills-chart">
     <Bar :data="data" :options="options" />
@@ -27,7 +19,6 @@ import {
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-// Define props
 defineProps({
   data: {
     type: Object,
@@ -45,15 +36,12 @@ const options = {
     },
   },
 };
-
 </script>
 
 <style scoped>
 .team-skills-chart {
   padding: 0 16px;
   margin-top: 24px;
-
-  /* Add padding to prevent overflow caused by gutter */
 }
 
 .team-skills-average-chart-title {
@@ -66,7 +54,6 @@ const options = {
 
 :deep(.el-card) {
   overflow: hidden;
-  /* Prevent chart from overflowing */
 }
 
 :deep(.el-card),

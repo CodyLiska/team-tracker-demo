@@ -5,16 +5,37 @@
   font-weight: 400;
 
   /* Theme variables (light mode) */
-  --bg-main: #ffd600; /* Light background */
-  --bg-secondary: #F0F8FF; /* Slightly lighter background for contrast */
-  --text-main: #000000; /* Main text color */
-  --text-secondary: #5c5c6e; /* Secondary text color */
-  --card-bg: #F0F8FF; /* Card background */
-  --header-bg: #ffd600; /* Header background */
-  --footer-bg: #ffd600; /* Footer background */
-  --border: #ffab00; /* Border color */
-  --primary: #ffea00; /* Primary accent color */
-  --secondary: #ff6f00; /* Secondary accent color */
+  /* --bg-main: #ffd600;
+  --bg-secondary: #F0F8FF; 
+  --text-main: #000000; 
+  --text-secondary: #5c5c6e;
+  --card-bg: #F0F8FF; 
+  --header-bg: #ffd600; 
+  --footer-bg: #ffd600; 
+  --border: #ffab00; 
+  --primary: #ffea00; 
+  --secondary: #ff6f00; 
+
+  color-scheme: light;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+
+  /* Modern, calm palette */
+  --bg-main: #f5f7fa; /* Very light gray-blue background */
+  --bg-secondary: #e9eef3; /* Slightly darker for contrast */
+  --card-bg: #ffffff; /* Pure white for cards */
+  --header-bg: #e3eaf6; /* Soft blue for header */
+  --footer-bg: #e3eaf6; /* Soft blue for footer */
+  --border: #d1d9e6; /* Light blue-gray border */
+  --primary: #3b82f6; /* Modern blue accent */
+  --secondary: #64748b; /* Muted slate for secondary accent */
+  --text-main: #222c37; /* Deep blue-gray for main text */
+  --text-secondary: #6b7280; /* Muted gray for secondary text */
 
   color-scheme: light;
   color: var(--text-main);

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const recentActivitySchema = new mongoose.Schema({
   date: String, // mm/dd/yyyy
@@ -7,8 +7,8 @@ const recentActivitySchema = new mongoose.Schema({
   details: String,
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('RecentActivity', recentActivitySchema);
+module.exports = mongoose.model("RecentActivity", recentActivitySchema);

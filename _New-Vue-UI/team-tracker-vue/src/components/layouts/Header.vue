@@ -1,6 +1,6 @@
 <template>
   <div class="header-content">
-    <router-link to="/" class="logo">Soccer Tracker</router-link>
+    <router-link to="/" class="logo">Synergy FC Team Tracker</router-link>
     <el-menu mode="horizontal" :default-active="activeMenu" class="nav-menu">
       <el-menu-item v-for="item in navigationItems" :key="item.label" :index="item.path">
         <router-link :to="item.path">{{ item.label }}</router-link>
@@ -19,7 +19,7 @@ import { useRoute } from 'vue-router'
 
 const navigationItems = [
   { label: 'Home', path: '/' },
-  { label: 'Dashboard', path: '/coach' },
+  { label: 'Coach Dashboard', path: '/coach' },
 ]
 
 const route = useRoute()

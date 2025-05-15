@@ -1,4 +1,3 @@
-<!-- src/views/coach/CoachError.vue -->
 <template>
   <el-container style="text-align: center; padding: 40px 24px;">
     <el-row justify="center">

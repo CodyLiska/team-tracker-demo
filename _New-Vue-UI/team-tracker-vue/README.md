@@ -28,9 +28,11 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 - ACTIVITY TABLE
 - [ ] delete button for game outcomes isn't deleting from the table
 - [ ] possible have it update with data from sport easy app
-
+- SUMMARY PAGES
+- [ ] add a summary page to display all games played
 
 ## Down the road
-- [ ] implement a better color scheme
+- [ ] implement a better color scheme - TEMPORARY FOR NOW
   - the overall layout 
   - bar graph colors
+- [ ] to delete a row from RecentActivity, you have to click into it to diplay a modal, then click the delete button.

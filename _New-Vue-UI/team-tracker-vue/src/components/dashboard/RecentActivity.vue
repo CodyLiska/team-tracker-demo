@@ -17,8 +17,11 @@
           <td>{{ activity.player }}</td>
           <td>{{ activity.activity }}</td>
           <td>{{ activity.details }}</td>
-          <td class="delete-cell">
+          <!-- <td class="delete-cell">
             <span class="delete-icon" @click="deleteActivity(activity._id)" title="Delete">🗑️</span>
+          </td> -->
+          <td class="delete-cell">
+            <span class="delete-icon" @click="$emit('delete', activity)" title="Delete">🗑️</span>
           </td>
         </tr>
       </tbody>
@@ -28,23 +31,14 @@
 
 <script setup>
 import { defineProps } from 'vue';
-import { recentActivityService } from '../../services/recentActivityService';
+// import { recentActivityService } from '../../services/recentActivityService';
 
 const props = defineProps({
   recentActivity: {
     type: Array,
     required: true
-  },
-  onDelete: {
-    type: Function,
-    required: false
   }
 });
-
-const deleteActivity = async (id) => {
-  await recentActivityService.deleteActivity(id);
-  if (props.onDelete) this.$emit('delete', row);
-};
 </script>
 
 <style scoped>
@@ -54,7 +48,6 @@ const deleteActivity = async (id) => {
   border-spacing: 0;
   margin-top: 1rem;
   margin-bottom: 2rem;
-  /* Add space below the table */
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   border-radius: 16px;

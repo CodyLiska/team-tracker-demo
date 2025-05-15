@@ -11,7 +11,7 @@
       <el-link href="#" target="_blank"><i class="fab fa-linkedin"></i></el-link>
     </el-row>
     <el-row justify="center">
-      <span>© 2024 Soccer Player Tracker. All rights reserved</span>
+      <span>© 2025 Synergy FC Player Tracker. All rights reserved</span>
     </el-row>
   </footer>
 </template>
@@ -22,10 +22,6 @@
 
 <style scoped>
 .footer {
-  /* margin: 0; */
-  /* Remove unnecessary margins */
-  /* padding: 16px 0; */
-  /* Add padding for spacing */
   text-align: center;
   background: var(--footer-bg);
   color: var(--text-main);

@@ -72,7 +72,6 @@
 
 .subtitle {
   color: var(--text-secondary);
-  /* Use --text-secondary for the subtitle */
   font-size: 1.1rem;
   margin-bottom: 36px;
   text-align: center;

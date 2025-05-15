@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// POST /api/recent-activity
 router.post("/", async (req, res) => {
   try {
     const { date, player, activity, details } = req.body;

@@ -1,6 +1,5 @@
 <!-- EVENTUALLY MOVE TO src/components/player/PlayerDetail.vue -->
 
-<!-- PlayerDetailsModal.vue -->
 <template>
   <el-dialog :model-value="localVisible" :title="`Player Details: ${player.name}`" width="400px" @close="handleClose">
     <div class="player-basic">

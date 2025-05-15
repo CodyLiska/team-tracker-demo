@@ -1,4 +1,3 @@
-// backend/routes/teamStatRoutes.js
 const express = require("express");
 const router = express.Router();
 const Player = require("../models/Player");
@@ -12,7 +11,7 @@ router.get("/", async (req, res) => {
     const winRate =
       gamesPlayed > 0 ? ((wins / gamesPlayed) * 100).toFixed(1) + "%" : "0%";
 
-    // Example teamRating calculation: average of all player technical scores
+    // Rating calculation: average of all player technical scores
     const players = await Player.find();
     let teamRating = 0;
     let playerCount = players.length;
